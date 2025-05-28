@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture Business Collect - VBC | WhatsApp Shopping Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #fc960b;
+            --secondary-color: #e8850a;
+            --accent-color: #fff4e6;
+            --bg-light: #ffffff;
+            --bg-dark: #0a0a0a;
+            --text-light: #333333;
+            --text-dark: #ffffff;
+            --card-light: #f8f9fa;
+            --card-dark: #1a1a1a;
+            --border-light: #e0e0e0;
+            --border-dark: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        body.light-theme {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        body.dark-theme {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .dark-theme .header {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .logo-placeholder {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .dark-theme .logo-placeholder {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .brand-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .light-theme .theme-toggle {
+            color: var(--primary-color);
+        }
+
+        .dark-theme .theme-toggle {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(252, 150, 11, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            box-shadow: 0 8px 25px rgba(252, 150, 11, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(252, 150, 11, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light-theme .feature-card {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .dark-theme .feature-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(252, 150, 11, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* Products Slider */
+        .products {
+            padding: 80px 0;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 300px;
+            margin-right: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .slide {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .dark-theme .slide {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        .slide:hover {
+            transform: scale(1.05);
+        }
+
+        .slide-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .slide-content {
+            padding: 20px;
+        }
+
+        .slide h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .pricing-card {
+            background: var(--card-light);
+            border: 2px solid var(--border-light);
+        }
+
+        .dark-theme .pricing-card {
+            background: var(--card-dark);
+            border: 2px solid var(--border-dark);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(252, 150, 11, 0.2);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .contact-item {
+            padding: 30px 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .light-theme .contact-item {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .dark-theme .contact-item {
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(252, 150, 11, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .light-theme .footer {
+            border-top: 1px solid var(--border-light);
+        }
+
+        .dark-theme .footer {
+            border-top: 1px solid var(--border-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .slide {
+                min-width: 250px;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .logo-section {
+                order: 2;
+            }
+            
+            .nav-controls {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo-section">
+                    <div class="logo-placeholder">VBC</div>
+                    <div class="brand-name">Venture Business Collect</div>
+                </div>
+                <div class="nav-controls">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Shop Smart on WhatsApp</h1>
+                <p>Experience seamless shopping through our intelligent WhatsApp bot integrated with Ghala. Browse, order, and pay - all in one chat!</p>
+                <a href="https://wa.me/your-number" class="whatsapp-btn">
+                    📱 Start Shopping on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose VBC WhatsApp Bot?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>AI-Powered Shopping</h3>
+                    <p>Our intelligent bot understands your needs and provides personalized product recommendations instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Lightning Fast</h3>
+                    <p>Browse thousands of products, get instant responses, and complete purchases in seconds.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3>Secure Payments</h3>
+                    <p>Integrated with Ghala for secure, reliable payment processing with multiple payment options.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📦</span>
+                    <h3>Real-time Tracking</h3>
+                    <p>Get instant updates on your orders, from confirmation to delivery, right in your chat.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Smart Recommendations</h3>
+                    <p>Discover products you'll love with our AI-powered recommendation engine.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🌟</span>
+                    <h3>24/7 Support</h3>
+                    <p>Our bot is always available to help you shop, answer questions, and resolve issues.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="slider-container">
+                <div class="slider" id="productSlider">
+                    <div class="slide">
+                        <div class="slide-image">📱</div>
+                        <div class="slide-content">
+                            <h3>Electronics</h3>
+                            <p>Latest smartphones, laptops, and gadgets at competitive prices.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image">👕</div>
+                        <div class="slide-content">
+                            <h3>Fashion</h3>
+                            <p>Trendy clothing, shoes, and accessories for every style.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image">🏠</div>
+                        <div class="slide-content">
+                            <h3>Home & Living</h3>
+                            <p>Everything you need to make your house a home.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image">💄</div>
+                        <div class="slide-content">
+                            <h3>Beauty</h3>
+                            <p>Premium cosmetics and skincare products.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image">🏃</div>
+                        <div class="slide-content">
+                            <h3>Sports</h3>
+                            <p>Athletic wear and equipment for active lifestyles.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image">📚</div>
+                        <div class="slide-content">
+                            <h3>Books</h3>
+                            <p>Educational materials and entertainment reading.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-nav">
+                <button class="nav-btn" onclick="moveSlider(-1)">←</button>
+                <button class="nav-btn" onclick="moveSlider(1)">→</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price">Free</div>
+                    <ul class="pricing-features">
+                        <li>✅ Browse all products</li>
+                        <li>✅ Basic recommendations</li>
+                        <li>✅ Standard support</li>
+                        <li>✅ Order tracking</li>
+                    </ul>
+                    <a href="https://wa.me/your-number" class="whatsapp-btn">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Premium</h3>
+                    <div class="price">$9.99/mo</div>
+                    <ul class="pricing-features">
+                        <li>✅ Everything in Basic</li>
+                        <li>✅ AI-powered recommendations</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ Exclusive deals</li>
+                        <li>✅ Early access to products</li>
+                    </ul>
+                    <a href="https://wa.me/your-number" class="whatsapp-btn">Upgrade Now</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Business</h3>
+                    <div class="price">$29.99/mo</div>
+                    <ul class="pricing-features">
+                        <li>✅ Everything in Premium</li>
+                        <li>✅ Bulk ordering</li>
+                        <li>✅ Custom catalogs</li>
+                        <li>✅ Dedicated account manager</li>
+                        <li>✅ API access</li>
+                    </ul>
+                    <a href="https://wa.me/your-number" class="whatsapp-btn">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <h3>WhatsApp</h3>
+                    <p>+255 XXX XXX XXX</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <h3>Email</h3>
+                    <p>info@vbc.co.tz</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <h3>Website</h3>
+                    <p>www.vbc.co.tz</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <h3>Location</h3>
+                    <p>Dar es Salaam, Tanzania</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Venture Business Collect (VBC). All rights reserved. | Powered by Ghala</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const isLight = body.classList.contains('light-theme');
+            
+            if (isLight) {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+            } else {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+            }
+        }
+
+        // Product Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function moveSlider(direction) {
+            currentSlide += direction;
+            
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 3; // Show 3 slides at once
+            } else if (currentSlide > totalSlides - 3) {
+                currentSlide = 0;
+            }
+            
+            const slider = document.getElementById('productSlider');
+            const slideWidth = slides[0].offsetWidth + 30; // Including margin
+            slider.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+        }
+
+        // Auto-slide every 5 seconds
+        setInterval(() => {
+            moveSlider(1);
+        }, 5000);
+
+        // Smooth scrolling for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            document.querySelectorAll('.feature-card, .slide, .pricing-card, .contact-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Responsive slider adjustment
+        window.addEventListener('resize', () => {
+            const slider = document.getElementById('productSlider');
+            slider.style.transform = 'translateX(0)';
+            currentSlide = 0;
+        });
+    </script>
+</body>
+</html>
